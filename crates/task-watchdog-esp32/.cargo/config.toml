@@ -1,0 +1,8 @@
+[build]
+target = "xtensa-esp32-espidf"
+
+[target.xtensa-esp32-espidf]
+runner = "espflash flash -S --monitor"
+rustflags = [
+  "-C", "link-arg=-Tlinkall.x",
+]

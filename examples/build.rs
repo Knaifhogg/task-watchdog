@@ -79,24 +79,12 @@ fn main() {
         println!("cargo:rustc-link-arg-bins=-Tdevice.x");
     }
 
-    // Set embassy linker arguments for the binary.
+    // Set ARM Cortex-M linker arguments for the binary.
     println!("cargo:rustc-link-arg=-v");
-    #[cfg(not(feature = "esp32"))]
-    {
-        println!("cargo:rustc-link-arg-bins=--nmagic");
-        println!("cargo:rustc-link-arg-bins=-Tlink.x");
-    }
-    #[cfg(feature = "esp32")]
-    {
-        println!("cargo:rustc-link-arg-bins=-Wl,-Tlinkall.x");
-        println!("cargo:rustc-link-arg=-nostartfiles");
-    }
+    println!("cargo:rustc-link-arg-bins=--nmagic");
+    println!("cargo:rustc-link-arg-bins=-Tlink.x");
 
     // Required for defmt
     #[cfg(feature = "defmt")]
     println!("cargo:rustc-link-arg-bins=-Tdefmt.x");
-
-    // Only RP2040 uses this linker file.
-    #[cfg(all(feature = "rp2040-memory-x", not(feature = "rp2040-hal")))]
-    println!("cargo:rustc-link-arg-bins=-Tlink-rp.x");
 }

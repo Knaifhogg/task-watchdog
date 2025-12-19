@@ -11,12 +11,12 @@
     //"rust-analyzer.cargo.features": [ "alloc" ],
     //"rust-analyzer.cargo.features": [ "embassy", "rp2040", ],
     //"rust-analyzer.cargo.features": [ "embassy", "rp2350", ],
-    //"rust-analyzer.cargo.features": [ "defmt", "embassy", "rp2040", ],
+    "rust-analyzer.cargo.features": [ "defmt", "embassy", "rp2040-embassy", ],
     //"rust-analyzer.cargo.features": [ "defmt", "embassy", "rp2350", ],
     //"rust-analyzer.cargo.features": [ "defmt", "embassy", "rp2040", "alloc" ],
     //"rust-analyzer.cargo.features": [ "defmt", "embassy", "rp2350", "alloc" ],
     //"rust-analyzer.cargo.features": [ "defmt", "embassy", "stm32", ],
-    "rust-analyzer.cargo.features": [ "rp2040-hal", "cortex-m", "dep:embedded-hal" ],
+    // "rust-analyzer.cargo.features": [ "rp2040-hal", "cortex-m", "dep:embedded-hal" ],
     "rust-analyzer.cargo.noDefaultFeatures": true,
 
     // Clippy settings

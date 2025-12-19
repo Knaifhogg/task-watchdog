@@ -4,13 +4,26 @@ All scripts expect to be run in the root directory of the repository.
 
 ## Building
 
-There are scripts provided to build all supported combinations of features/targets for
-* the task-watchdog crate
-* all examples.
+Build scripts are provided for the split-crate architecture:
 
-As well as preparing to check in the code, these scripts are useful for reviewing supported feature combinations.
+### `build-lib.sh`
+Builds the core library and all platform-specific implementations for all supported targets and feature combinations.
 
-Example usage, to build all library and example feature/target combinations:
+```bash
+scripts/build-lib.sh
+```
+
+### `build-examples.sh`
+Builds all example binaries for supported platforms (RP2040, RP2350, STM32, nRF52840). 
+
+**Note:** ESP32 examples are not included due to native library conflicts (`riscv-rt` v0.12 vs v0.16).
+
+```bash
+scripts/build-examples.sh
+```
+
+### `build-all.sh`
+Convenience script that runs both `build-lib.sh` and `build-examples.sh`.
 
 ```bash
 scripts/build-all.sh
@@ -20,41 +33,64 @@ This requires the installation of the following targets:
 
 ```bash
 rustup target add thumbv6m-none-eabi         # RP2040/Pico
-rustup target add thumbv8m.main-none-eabihf  # RP235x/Pico 2
+rustup target add thumbv8m.main-none-eabihf  # RP2350/Pico 2
 rustup target add thumbv7m-none-eabi         # STM32
+rustup target add thumbv7em-none-eabi        # nRF52840
 ```
 
-## Flashing examples
+## Flashing Examples
 
-Helper scripts are provided to flash the [embassy](examples/src/embassy.rs) example to the Pico and Pico 2.  These use the default features (defmt but no alloc).  Other feature combinations are available.  See [build-examples.sh](build-examples.sh).
+Helper scripts are provided to build and flash examples to various platforms via debug probe:
 
-Example to flash the embassy example to a Pico via a Debug Probe:
+- `flash-async-pico.sh` - Flash `embassy` example to RP2040
+- `flash-async-pico2.sh` - Flash `embassy` example to RP2350
+- `flash-async-stm32f103c8.sh` - Flash `embassy` example to STM32F103C8 (Blue Pill)
+- `flash-async-nrf52840.sh` - Flash `embassy` example to nRF52840
+- `flash-sync-pico.sh` - Flash synchronous `rp-sync` example to RP2040
+- `flash-sync-pico2.sh` - Flash synchronous `rp-sync` example to RP2350
+
+Example usage:
 
 ```bash
-scripts/flash-embassy-pico.sh
+scripts/flash-async-pico.sh
 ```
 
 ## ESP32
 
-At the time of writing, ESP32 support in Rust requires additional tools to be installed.  Your best resource is the [ESP on Rust Book](https://docs.esp-rs.org/book/).
+### Examples
 
-The tl;dr is:
+ESP32 examples are located in a separate directory to avoid native library conflicts. The main examples/Cargo.toml does not include ESP32 support due to a `riscv-rt` linking conflict: RP2040/RP2350 require `riscv-rt` v0.12, while ESP32 requires v0.16 via `esp-riscv-rt`.
+
+Build and flash the ESP32 embassy example:
+
+```bash
+scripts/flash-async-esp32.sh
+```
+
+Or manually:
+
+```bash
+cd crates/task-watchdog-esp32
+. ~/export-esp.sh
+cargo run --example embassy --target xtensa-esp32-espidf --features defmt
+```
+
+### Setup
+
+ESP32 support requires additional tools. See the [ESP on Rust Book](https://docs.esp-rs.org/book/) for complete setup instructions.
+
+Quick setup:
 
 ```bash
 cargo install espup
 cargo install espflash
 cargo install cargo-espflash
+espup install
 ```
 
-To manually run ESP32 builds you will need to source the ESP build environment in your shell:
+Then source the ESP environment before building:
 
 ```bash
 . ~/export-esp.sh
 ```
 
-And, instead of using the regular `cargo`, use:
-```bash
-~/.rustup/toolchains/esp/bin/cargo
-```
-
-The build scripts will souce the ESP build environment and use the correct verion of cargo (if installed).

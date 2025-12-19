@@ -1,0 +1,33 @@
+[package]
+name = "task-watchdog-rp-examples"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[[example]]
+name = "embassy"
+path = "embassy.rs"
+
+[[example]]
+name = "sync"
+path = "sync.rs"
+
+[dependencies]
+task-watchdog-rp = { path = "..", features = ["rp2040-embassy", "defmt"] }
+task-watchdog-core = { path = "../../task-watchdog-core" }
+embassy-executor = { version = "0.7.0", features = ["arch-cortex-m", "executor-thread"] }
+embassy-time = { version = "0.4" }
+embassy-sync = { version = "0.6.2", features = ["defmt"] }
+embassy-rp = { version = "0.4", features = ["time-driver", "critical-section-impl", "defmt"] }
+rp2040-hal = { version = "0.11", optional = true }
+cortex-m = { version = "0.7.6", features = ["inline-asm"] }
+cortex-m-rt = { version = "0.7.0", optional = true }
+static_cell = "2.1"
+defmt = "0.3"
+defmt-rtt = "0.4"
+panic-probe = { version = "0.3", features = ["print-defmt"] }
+embedded-hal = { version = "1.0.0", optional = true }
+
+[features]
+sync = ["rp2040-hal", "rp2040-embassy", "cortex-m-rt", "embedded-hal"]

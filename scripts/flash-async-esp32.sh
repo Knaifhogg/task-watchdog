@@ -2,15 +2,20 @@
 set -e
 set -x
 
-# Include common build script stuff
-source scripts/build-common.sh
+# ESP32 example for task-watchdog
+# Located in crates/task-watchdog-esp32/examples/ due to riscv-rt native library conflict
+# with ARM targets (RP2040/RP2350)
 
-# Build embassy example ...
-EXAMPLE=embassy
-export RUSTC=$ESP_RUSTC
-export CARGO=$ESP_CARGO
-source $HOME/export-esp.sh
-$CARGO -Z unstable-options -Z build-std=core build --manifest-path=$EXAMPLES_MANIFEST_PATH --bin $EXAMPLE --target $ESP32_TARGET --no-default-features --features esp32-embassy,esp32-println
-unset RUSTC
-unset CARGO
-espflash flash -S --chip esp32 --monitor target/$ESP32_TARGET/debug/embassy
+# Install ESP tooling if not already installed
+# cargo install espup espflash cargo-espflash
+
+cd crates/task-watchdog-esp32
+
+# Source ESP environment
+. ~/export-esp.sh
+
+# Build and flash the example
+cargo run --example embassy --target xtensa-esp32-espidf --features defmt
+
+cd ../..
+

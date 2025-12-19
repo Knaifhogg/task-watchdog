@@ -1,0 +1,24 @@
+[package]
+name = "task-watchdog-stm32-examples"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[[example]]
+name = "embassy"
+path = "embassy.rs"
+
+[dependencies]
+task-watchdog-stm32 = { path = "..", features = ["defmt"] }
+task-watchdog-core = { path = "../../task-watchdog-core" }
+embassy-executor = { version = "0.7.0", features = ["arch-cortex-m", "executor-thread"] }
+embassy-time = { version = "0.4" }
+embassy-sync = { version = "0.6.2", features = ["defmt"] }
+embassy-stm32 = { version = "0.2.0", features = ["memory-x", "time-driver-any", "unstable-pac", "stm32f103c8", "defmt"] }
+cortex-m = { version = "0.7.6", features = ["inline-asm"] }
+cortex-m-rt = { version = "0.7.0" }
+static_cell = "2.1"
+defmt = "0.3"
+defmt-rtt = "0.4"
+panic-probe = { version = "0.3", features = ["print-defmt"] }

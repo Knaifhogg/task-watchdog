@@ -5,10 +5,10 @@ set -x
 # Include common build script stuff
 source scripts/build-common.sh
 
-# Build embassy example ...
+# Build example ...
 EXAMPLE=rp-sync
 
 # ... for Pico
 TARGET=$RP2040_TARGET
 
-cargo run --manifest-path=$EXAMPLES_MANIFEST_PATH --bin $EXAMPLE --target $TARGET --no-default-features --features rp2040-hal,defmt
+cargo run --manifest-path=$EXAMPLES_MANIFEST_PATH --bin $EXAMPLE --target $TARGET --features rp2040-hal-defmt

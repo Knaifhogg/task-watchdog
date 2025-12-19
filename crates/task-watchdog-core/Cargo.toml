@@ -1,0 +1,31 @@
+[package]
+name = "task-watchdog-core"
+version = "0.1.2"
+edition = "2021"
+authors = ["Piers Finlayson <piers@piers.rocks"]
+license = "MIT OR Apache-2.0"
+description = "Core platform-agnostic watchdog logic for task-watchdog"
+documentation = "https://docs.rs/task-watchdog-core"
+repository = "https://github.com/piersfinlayson/task-watchdog"
+keywords = ["embedded", "watchdog", "no_std"]
+categories = ["embedded", "no-std"]
+
+[features]
+default = []
+alloc = []
+defmt = ["dep:defmt"]
+
+[dependencies]
+defmt = { version = "^1.0.1", optional = true }
+portable-atomic = { version = "1.11.0", features = ["critical-section"] }
+
+[lib]
+name = "task_watchdog_core"
+path = "src/lib.rs"
+test = false
+
+[profile.dev]
+opt-level = "s"
+
+[profile.release]
+debug = 2

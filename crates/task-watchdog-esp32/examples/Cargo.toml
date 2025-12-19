@@ -1,0 +1,22 @@
+[package]
+name = "task-watchdog-esp32-examples"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[[example]]
+name = "embassy"
+path = "embassy.rs"
+
+[dependencies]
+task-watchdog-esp32 = { path = "..", features = ["defmt"] }
+task-watchdog-core = { path = "../../task-watchdog-core" }
+embassy-executor = { version = "0.9.1", features = ["executor-thread"] }
+embassy-time = { version = "0.5.0" }
+embassy-sync = { version = "0.7.2", features = ["defmt"] }
+esp-hal = { version = "1.0.0", features = ["esp32", "defmt"] }
+static_cell = "2.1"
+defmt = "0.3"
+defmt-rtt = "0.4"
+panic-probe = { version = "0.3", features = ["print-defmt"] }

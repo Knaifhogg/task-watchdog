@@ -1,0 +1,51 @@
+[package]
+name = "task-watchdog-rp"
+version = "0.1.2"
+edition = "2021"
+authors = ["Piers Finlayson <piers@piers.rocks"]
+license = "MIT OR Apache-2.0"
+description = "RP2040 and RP2350 (Pico/Pico 2) implementations of task-watchdog"
+documentation = "https://docs.rs/task-watchdog-rp"
+repository = "https://github.com/piersfinlayson/task-watchdog"
+keywords = ["embedded", "watchdog", "rp2040", "rp2350", "embassy"]
+categories = ["embedded", "no-std"]
+
+[features]
+default = []
+
+# Embassy support
+rp2040-embassy = ["dep:embassy-rp", "dep:embassy-sync", "dep:embassy-time", "dep:embassy-executor", "dep:cortex-m", "dep:cortex-m-rt", "embassy-executor/arch-cortex-m", "embassy-rp/rp2040", "embassy-rp/time-driver"]
+rp2350-embassy = ["dep:embassy-rp", "dep:embassy-sync", "dep:embassy-time", "dep:embassy-executor", "dep:cortex-m", "dep:cortex-m-rt", "embassy-executor/arch-cortex-m", "embassy-rp/rp235xa", "embassy-rp/time-driver"]
+
+# HAL support (sync)
+rp2040-hal = ["dep:rp2040-hal", "dep:cortex-m", "dep:cortex-m-rt", "cortex-m/critical-section-single-core", "dep:embedded-hal"]
+rp2350-hal = ["dep:rp235x-hal", "dep:cortex-m", "dep:cortex-m-rt", "cortex-m/critical-section-single-core", "dep:embedded-hal"]
+
+# Other
+alloc = ["task-watchdog-core/alloc"]
+defmt = ["task-watchdog-core/defmt", "dep:defmt", "embassy-rp/defmt", "embassy-executor/executor-thread", "embassy-executor/executor-interrupt", "embassy-executor/defmt", "embassy-sync/defmt", "embassy-time/defmt"]
+
+[dependencies]
+task-watchdog-core = { path = "../task-watchdog-core", version = "0.1.2" }
+defmt = { version = "^1.0.1", optional = true }
+embassy-sync = { version = "0.7.2", optional = true }
+embassy-time = { version = "0.5.0", optional = true }
+embassy-executor = { version = "0.9.1", optional = true }
+embassy-rp = { version = "0.9.0", features = ["time-driver"], optional = true }
+embassy-embedded-hal = { version = "0.5.0", optional = true }
+cortex-m = { version = "0.7.7", features = ["inline-asm"], optional = true }
+cortex-m-rt = { version = "0.7.5", optional = true }
+embedded-hal = { version = "1.0", optional = true }
+rp2040-hal = { version = "0.12", optional = true }
+rp235x-hal = { version = "0.4", optional = true }
+
+[lib]
+name = "task_watchdog_rp"
+path = "src/lib.rs"
+test = false
+
+[profile.dev]
+opt-level = "s"
+
+[profile.release]
+debug = 2

@@ -1,0 +1,38 @@
+[package]
+name = "task-watchdog-esp32"
+version = "0.1.2"
+edition = "2021"
+authors = ["Piers Finlayson <piers@piers.rocks"]
+license = "MIT OR Apache-2.0"
+description = "ESP32 implementations of task-watchdog using Embassy"
+documentation = "https://docs.rs/task-watchdog-esp32"
+repository = "https://github.com/piersfinlayson/task-watchdog"
+keywords = ["embedded", "watchdog", "esp32", "embassy"]
+categories = ["embedded", "no-std"]
+
+[features]
+default = []
+
+alloc = ["task-watchdog-core/alloc"]
+defmt = ["task-watchdog-core/defmt", "dep:defmt", "esp-hal/defmt", "embassy-executor/defmt", "embassy-sync/defmt", "embassy-time/defmt"]
+
+[dependencies]
+task-watchdog-core = { path = "../task-watchdog-core", version = "0.1.2" }
+defmt = { version = "^1.0.1", optional = true }
+embassy-sync = { version = "0.7.2" }
+embassy-time = { version = "0.5.0" }
+embassy-executor = { version = "0.9.1" }
+esp-hal = { version = "1.0.0" }
+esp-rtos = { version = "0.2.0" }
+critical-section = { version = "1.2.0" }
+
+[lib]
+name = "task_watchdog_esp32"
+path = "src/lib.rs"
+test = false
+
+[profile.dev]
+opt-level = "s"
+
+[profile.release]
+debug = 2
